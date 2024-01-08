@@ -7,8 +7,10 @@ module.exports = {
         const {
             print,
             parameters,
-            template
+            template,
+            filesystem
         } = toolbox
+        const fs = filesystem
 
 
         const moduleName: string = parameters.first;
@@ -17,20 +19,29 @@ module.exports = {
             print.error("Module name must be provided");
             return;
         }
-
-
         template.generate({
             template: "controller.js.ejs",
             target: `src/modules/${moduleName}/controllers/${moduleName}Controller.js`,
             props: {moduleName: moduleName}
         })
-        print.success(`Controller gerado com sucesso`)
+        print.info(`${print.checkmark} Controller gerado com sucesso`)
         template.generate({
             template: "router.js.ejs",
             target: `src/modules/${moduleName}/routes/${moduleName}Router.js`,
             props: {moduleName: moduleName}
         })
-        print.success(`Router gerado com sucesso`)
+        print.info(`${print.checkmark} Rota gerada com sucesso`)
 
+
+        const appFile: string = "src/app.js";
+        const appFileContent = fs.read(appFile);
+
+        const importStatement = `const usersRouter = require(\'./modules/${moduleName}/routes/${moduleName}Router\');`;
+        const updatedAppFileContent = `${importStatement}\n${appFileContent}`;
+
+        fs.write(appFile, updatedAppFileContent);
+
+        print.success("Modulo gerado e importado com sucesso");
+        
     }
 }
