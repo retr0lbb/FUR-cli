@@ -1,0 +1,10 @@
+const express = require("express")
+
+const router = express.Router()
+const <%=props.moduleName%>Controller = require("../controllers/<%=props.moduleName%>Controller")
+
+
+router.get("/<%=props.moduleName%>", <%=props.moduleName%>Controller.list)
+
+
+module.exports = router;
