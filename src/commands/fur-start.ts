@@ -29,6 +29,7 @@ module.exports ={
             version: projectVersion.projectVersion,
             description: "no description",
             main: "src/app.js",
+            type: "module",
             scripts: {
                 dev: "node ."
             },
